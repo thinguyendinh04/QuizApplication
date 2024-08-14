@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.dinhthi2004.appquiz.data.model.Answer
 import com.dinhthi2004.appquiz.data.model.Question
 import com.dinhthi2004.appquiz.data.model.Quiz
-import com.dinhthi2004.appquiz.presentation.screens.quiz.QuizViewModel
+import com.dinhthi2004.appquiz.presentation.screens.MainScreen.QuizViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

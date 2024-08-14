@@ -1,4 +1,4 @@
-package com.dinhthi2004.appquiz.presentation.screens.QuizTaking
+package com.dinhthi2004.appquiz.presentation.screens.DoingQuiz
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -13,10 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dinhthi2004.appquiz.data.database.QuizDatabase
 import com.dinhthi2004.appquiz.data.model.Answer
 import com.dinhthi2004.appquiz.data.model.Question
-import com.dinhthi2004.appquiz.presentation.screens.quiz.QuizViewModel
+import com.dinhthi2004.appquiz.presentation.screens.MainScreen.QuizViewModel
 
 
 // Dummy data for testing
@@ -68,7 +67,7 @@ val dummyAnswers = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuizTakingScreen(viewModel: QuizViewModel, quizId: Long, navController: NavHostController) {
+fun QuizDoingScreen(viewModel: QuizViewModel, quizId: Long, navController: NavHostController) {
     var questions by remember { mutableStateOf(dummyQuestions) }
     var answers by remember { mutableStateOf(emptyList<Answer>()) }
     var currentQuestionIndex by remember { mutableStateOf(0) }

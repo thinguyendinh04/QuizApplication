@@ -1,4 +1,4 @@
-package com.dinhthi2004.appquiz.presentation.screens.quiz
+package com.dinhthi2004.appquiz.presentation.screens.MainScreen
 
 import android.util.Log
 import androidx.lifecycle.LiveData

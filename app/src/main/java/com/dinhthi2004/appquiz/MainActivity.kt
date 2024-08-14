@@ -7,9 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.dinhthi2004.appquiz.data.database.QuizDatabase
-import com.dinhthi2004.appquiz.navigation.QuizNavGraph
-import com.dinhthi2004.appquiz.presentation.screens.quiz.QuizViewModel
-import com.dinhthi2004.appquiz.presentation.screens.quiz.QuizViewModelFactory
+import com.dinhthi2004.appquiz.navigation.AppNavigation
+import com.dinhthi2004.appquiz.presentation.screens.MainScreen.QuizViewModel
+import com.dinhthi2004.appquiz.presentation.screens.MainScreen.QuizViewModelFactory
 import com.dinhthi2004.appquiz.ui.theme.AppQuizTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
 
             setContent {
                 AppQuizTheme {
-                    QuizNavGraph(navController, quizViewModel)
+                    AppNavigation(navController, quizViewModel)
                 }
             }
         }
