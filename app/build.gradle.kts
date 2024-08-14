@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,42 +71,32 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Splash Screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.5")
 
-    //Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    // Room
+    implementation("androidx.room:room-ktx:2.6.0")
+    kapt("androidx.room:room-compiler:2.6.0")
+    implementation("androidx.room:room-paging:2.6.0")
 
-    //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt("com.google.dagger:hilt-compiler:2.45")
-    implementation("androidx.hilt:hilt-navigation:1.2.0")
+    // Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.44")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
-    //Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    //Coil
-    implementation("io.coil-kt:coil:2.7.0")
-    implementation("io.coil-kt:coil-compose:2.7.0")
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
-    //Datastore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    // Extended Icons
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
-    //Compose Foundation
-    implementation("androidx.compose.foundation:foundation:1.6.8")
-
-    //Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
-
-    //Lottie
-    implementation("com.airbnb.android:lottie-compose:6.0.0")
-
-    //Paging3
-    implementation("androidx.paging:paging-compose:3.3.0")
-    implementation("androidx.paging:paging-runtime:3.3.0")
-
-    //Room database
-    implementation("androidx.room:room-runtime:2.6.1")
+    // system UI Controller
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 }
