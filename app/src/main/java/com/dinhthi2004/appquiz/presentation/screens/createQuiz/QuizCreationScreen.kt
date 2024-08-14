@@ -1,21 +1,15 @@
 package com.dinhthi2004.appquiz.presentation.screens.createQuiz
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dinhthi2004.appquiz.data.model.Answer
@@ -32,6 +26,7 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
     var incorrectAnswers by remember { mutableStateOf(listOf("", "", "")) }
     val questionList = remember { mutableStateListOf<Question>() }
     val answerList = remember { mutableStateListOf<Answer>() }
+    var answerText by remember { mutableStateOf("") }
 
 
     Box(
@@ -42,51 +37,21 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .align(Alignment.TopCenter)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "Create your own quiz",
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(10.dp).align(Alignment.CenterVertically),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .align(Alignment.CenterVertically),
                     fontWeight = FontWeight.Bold
                 )
-
-                Button(
-                    onClick = {
-                        val quiz = Quiz(title = quizTitle)
-                        viewModel.insertQuiz(quiz) { quizId ->
-                            questionList.forEach { question ->
-                                val updatedQuestion = question.copy(quizId = quizId)
-                                viewModel.insertQuestion(updatedQuestion)
-                                answerList
-                                    .filter { it.answerText == question.correctAnswer }
-                                    .forEach { answer ->
-                                        viewModel.insertAnswer(answer.copy(questionId = updatedQuestion.questionId))
-                                    }
-                                answerList
-                                    .filter { it.answerText != question.correctAnswer }
-                                    .forEach { answer ->
-                                        viewModel.insertAnswer(answer.copy(questionId = updatedQuestion.questionId))
-                                    }
-                            }
-                            navController.popBackStack()
-                        }
-                    },
-                    modifier = Modifier.padding(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF5722)
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 4.dp,
-                        pressedElevation = 8.dp
-                    )
-                ) {
-                    Text("Save a Quiz")
-                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Quiz Title", style = MaterialTheme.typography.titleMedium)
@@ -113,8 +78,8 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = correctAnswer,
-                onValueChange = { "Answer 1" },
+                value = answerText,
+                onValueChange = { answerText = it },
                 label = { Text("Answer 1") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -184,11 +149,49 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
                     correctAnswer = ""
                     incorrectAnswers = listOf("", "", "")
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF5722)
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 8.dp
+                )
             ) {
                 Text("Next Question")
+            }
+
+            Button(
+                onClick = {
+                    val quiz = Quiz(title = quizTitle)
+                    viewModel.insertQuiz(quiz) { quizId ->
+                        questionList.forEach { question ->
+                            val updatedQuestion = question.copy(quizId = quizId)
+                            viewModel.insertQuestion(updatedQuestion)
+                            answerList
+                                .filter { it.answerText == question.correctAnswer }
+                                .forEach { answer ->
+                                    viewModel.insertAnswer(answer.copy(questionId = updatedQuestion.questionId))
+                                }
+                            answerList
+                                .filter { it.answerText != question.correctAnswer }
+                                .forEach { answer ->
+                                    viewModel.insertAnswer(answer.copy(questionId = updatedQuestion.questionId))
+                                }
+                        }
+                        navController.popBackStack()
+                    }
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF5722)
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 8.dp
+                )
+            ) {
+                Text("Save a Quiz")
             }
         }
     }

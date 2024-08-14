@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -24,8 +25,18 @@ import com.dinhthi2004.appquiz.presentation.screens.quiz.QuizViewModel
 
 // Dummy data for testing
 val dummyQuestions = listOf(
-    Question(questionId = 1, quizId = 1, questionText = "What is the capital of France?", correctAnswer = "Paris"),
-    Question(questionId = 2, quizId = 1, questionText = "What is the largest planet in our solar system?", correctAnswer = "Jupiter")
+    Question(
+        questionId = 1,
+        quizId = 1,
+        questionText = "What is the capital of France?",
+        correctAnswer = "Paris"
+    ),
+    Question(
+        questionId = 2,
+        quizId = 1,
+        questionText = "What is the largest planet in our solar system?",
+        correctAnswer = "Jupiter"
+    )
 )
 
 val dummyAnswers = listOf(
@@ -47,115 +58,103 @@ fun QuizTakingScreen(viewModel: QuizViewModel, quizId: Long, navController: NavH
     var correctAnswers by remember { mutableStateOf(0) }
     var isQuizCompleted by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Take Quiz") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = Color(0xFF1976D2) // Blue color
-                )
-            )
-        },
-        content = { paddingValues ->
-            Column(
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (isQuizCompleted) {
+            Card(
                 modifier = Modifier
-                    .padding(paddingValues)
-                    .padding(16.dp)
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFE3F2FD) // Light blue background
+                ),
+                elevation = CardDefaults.cardElevation(8.dp)
             ) {
-                if (isQuizCompleted) {
-                    Card(
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Quiz Completed! Correct: $correctAnswers/${questions.size}")
+                    Button(
+                        onClick = { navController.popBackStack() },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFFE3F2FD) // Light blue background
-                        ),
-                        elevation = CardDefaults.cardElevation(8.dp)
+                            .padding(top = 16.dp)
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(Color(0xFF1976D2), Color(0xFF42A5F5))
+                                ),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent // Transparent to show gradient
+                        )
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text("Quiz Completed! Correct: $correctAnswers/${questions.size}")
-                            Button(
-                                onClick = { navController.popBackStack() },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp)
-                                    .background(
-                                        brush = Brush.horizontalGradient(
-                                            colors = listOf(Color(0xFF1976D2), Color(0xFF42A5F5))
-                                        ),
-                                        shape = RoundedCornerShape(16.dp)
-                                    ),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent // Transparent to show gradient
-                                )
-                            ) {
-                                Text("Back to Quiz List", color = Color.White)
-                            }
-                        }
+                        Text("Back to Quiz List", color = Color.White)
                     }
-                } else if (currentQuestionIndex < questions.size) {
-                    val question = questions[currentQuestionIndex]
-                    val answers = dummyAnswers.filter { it.questionId == question.questionId }
-                    val context = LocalContext.current
+                }
+            }
+        } else if (currentQuestionIndex < questions.size) {
+            val question = questions[currentQuestionIndex]
+            val answers = dummyAnswers.filter { it.questionId == question.questionId }
+            val context = LocalContext.current
 
-                    Toast.makeText(context, "Question: ${question.questionText}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Question: ${question.questionText}", Toast.LENGTH_SHORT).show()
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFFE3F2FD) // Light blue background
-                        ),
-                        elevation = CardDefaults.cardElevation(8.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(question.questionText, modifier = Modifier.padding(bottom = 16.dp))
-                            answers.shuffled().take(4).forEach { answer ->
-                                Button(
-                                    onClick = {
-                                        if (answer.isCorrect) {
-                                            correctAnswers++
-                                        }
-
-                                        if (currentQuestionIndex + 1 < questions.size) {
-                                            currentQuestionIndex++
-                                        } else {
-                                            isQuizCompleted = true
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 4.dp)
-                                        .background(
-                                            brush = Brush.horizontalGradient(
-                                                colors = listOf(Color(0xFF1976D2), Color(0xFF42A5F5))
-                                            ),
-                                            shape = RoundedCornerShape(16.dp)
-                                        ),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.Transparent // Transparent to show gradient
-                                    )
-                                ) {
-                                    Text(answer.answerText, color = Color.White)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFE3F2FD) // Light blue background
+                ),
+                elevation = CardDefaults.cardElevation(8.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(question.questionText, modifier = Modifier.padding(bottom = 16.dp))
+                    answers.shuffled().take(4).forEach { answer ->
+                        Button(
+                            onClick = {
+                                if (answer.isCorrect) {
+                                    correctAnswers++
                                 }
-                            }
+
+                                if (currentQuestionIndex + 1 < questions.size) {
+                                    currentQuestionIndex++
+                                } else {
+                                    isQuizCompleted = true
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                                .background(
+                                    brush = Brush.horizontalGradient(
+                                        colors = listOf(Color(0xFF1976D2), Color(0xFF42A5F5))
+                                    ),
+                                    shape = RoundedCornerShape(16.dp)
+                                ),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent // Transparent to show gradient
+                            )
+                        ) {
+                            Text(answer.answerText, color = Color.White)
                         }
                     }
                 }
             }
         }
-    )
+    }
 }
 
 @Preview
 @Composable
 fun QuizTakingScreenPreview() {
-    QuizTakingScreen(viewModel = QuizViewModel(QuizDatabase.getDatabase(LocalContext.current)), quizId = 1, navController = rememberNavController())
+    QuizTakingScreen(
+        viewModel = QuizViewModel(QuizDatabase.getDatabase(LocalContext.current)),
+        quizId = 1,
+        navController = rememberNavController()
+    )
 }
