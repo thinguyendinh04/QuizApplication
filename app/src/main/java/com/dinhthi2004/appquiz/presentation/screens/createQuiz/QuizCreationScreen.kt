@@ -1,14 +1,21 @@
 package com.dinhthi2004.appquiz.presentation.screens.createQuiz
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dinhthi2004.appquiz.data.model.Answer
@@ -26,146 +33,27 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
     val questionList = remember { mutableStateListOf<Question>() }
     val answerList = remember { mutableStateListOf<Answer>() }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Create Quiz") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = Color(0xFF1976D2)
-                )
-            )
-        },
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .padding(16.dp)
-                    .fillMaxSize()
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFE3F2FD)
-                    ),
-                    elevation = CardDefaults.cardElevation(8.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        OutlinedTextField(
-                            value = quizTitle,
-                            onValueChange = { quizTitle = it },
-                            label = { Text("Quiz Title") },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                containerColor = Color(0xFFFFFFFF),
-                                focusedLabelColor = Color(0xFF1976D2),
-                                unfocusedLabelColor = Color(0xFF90CAF9)
-                            )
-                        )
-                    }
-                }
-
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFE3F2FD)
-                    ),
-                    elevation = CardDefaults.cardElevation(8.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        OutlinedTextField(
-                            value = questionText,
-                            onValueChange = { questionText = it },
-                            label = { Text("Question") },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                containerColor = Color(0xFFFFFFFF),
-                                focusedLabelColor = Color(0xFF1976D2),
-                                unfocusedLabelColor = Color(0xFF90CAF9)
-                            )
-                        )
-
-                        OutlinedTextField(
-                            value = correctAnswer,
-                            onValueChange = { correctAnswer = it },
-                            label = { Text("Correct Answer") },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                containerColor = Color(0xFFFFFFFF),
-                                focusedLabelColor = Color(0xFF1976D2),
-                                unfocusedLabelColor = Color(0xFF90CAF9)
-                            )
-                        )
-
-                        incorrectAnswers.forEachIndexed { index, answer ->
-                            OutlinedTextField(
-                                value = answer,
-                                onValueChange = { newAnswer ->
-                                    incorrectAnswers =
-                                        incorrectAnswers.toMutableList().apply { this[index] = newAnswer }
-                                },
-                                label = { Text("Incorrect Answer ${index + 1}") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 8.dp),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color(0xFFFFFFFF),
-                                    focusedLabelColor = Color(0xFF1976D2),
-                                    unfocusedLabelColor = Color(0xFF90CAF9)
-                                )
-                            )
-                        }
-                    }
-                }
-
-                Button(
-                    onClick = {
-                        val question = Question(
-                            quizId = 0,
-                            questionText = questionText,
-                            correctAnswer = correctAnswer
-                        )
-                        questionList.add(question)
-
-                        incorrectAnswers.forEach { answerText ->
-                            val isCorrect = answerText == correctAnswer
-                            val answer = Answer(
-                                questionId = 0,
-                                answerText = answerText,
-                                isCorrect = isCorrect
-                            )
-                            answerList.add(answer)
-                        }
-
-                        questionText = ""
-                        correctAnswer = ""
-                        incorrectAnswers = listOf("", "", "")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF1976D2)
-                    )
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Question", tint = Color.White)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add Question", color = Color.White)
-                }
+                Text(
+                    text = "Create your own quiz",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(10.dp).align(Alignment.CenterVertically),
+                    fontWeight = FontWeight.Bold
+                )
 
                 Button(
                     onClick = {
@@ -174,11 +62,13 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
                             questionList.forEach { question ->
                                 val updatedQuestion = question.copy(quizId = quizId)
                                 viewModel.insertQuestion(updatedQuestion)
-                                answerList.filter { it.answerText == question.correctAnswer }
+                                answerList
+                                    .filter { it.answerText == question.correctAnswer }
                                     .forEach { answer ->
                                         viewModel.insertAnswer(answer.copy(questionId = updatedQuestion.questionId))
                                     }
-                                answerList.filter { it.answerText != question.correctAnswer }
+                                answerList
+                                    .filter { it.answerText != question.correctAnswer }
                                     .forEach { answer ->
                                         viewModel.insertAnswer(answer.copy(questionId = updatedQuestion.questionId))
                                     }
@@ -186,18 +76,121 @@ fun QuizCreationScreen(viewModel: QuizViewModel, navController: NavHostControlle
                             navController.popBackStack()
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
+                    modifier = Modifier.padding(10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF1976D2)
+                        containerColor = Color(0xFFFF5722)
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 4.dp,
+                        pressedElevation = 8.dp
                     )
                 ) {
-                    Icon(Icons.Default.Done, contentDescription = "Save Quiz", tint = Color.White)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Save Quiz", color = Color.White)
+                    Text("Save a Quiz")
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Quiz Title", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = quizTitle,
+                onValueChange = { quizTitle = it },
+                placeholder = { Text("i.e. Science") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = "Quiz Question", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = questionText,
+                onValueChange = { questionText = it },
+                placeholder = { Text("i.e. Which Pokémon are you?") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Quiz Answers", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = correctAnswer,
+                onValueChange = { "Answer 1" },
+                label = { Text("Answer 1") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    containerColor = Color(0xFFFFFFFF),
+                    focusedLabelColor = Color(0xFF000000),
+                    unfocusedLabelColor = Color(0xFF000000)
+                )
+            )
+
+            incorrectAnswers.forEachIndexed { index, answer ->
+                OutlinedTextField(
+                    value = answer,
+                    onValueChange = { newAnswer ->
+                        incorrectAnswers =
+                            incorrectAnswers
+                                .toMutableList()
+                                .apply { this[index] = newAnswer }
+                    },
+                    label = { Text("Answer ${index + 2}") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        containerColor = Color(0xFFFFFFFF),
+                        focusedLabelColor = Color(0xFF000000),
+                        unfocusedLabelColor = Color(0xFF000000)
+                    )
+                )
+            }
+
+            OutlinedTextField(
+                value = correctAnswer,
+                onValueChange = { correctAnswer = it },
+                label = { Text("Correct Answer") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    containerColor = Color(0xFFFFFFFF),
+                    focusedLabelColor = Color(0xFF000000),
+                    unfocusedLabelColor = Color(0xFF000000)
+                )
+            )
+
+            Button(
+                onClick = {
+                    val question = Question(
+                        quizId = 0,
+                        questionText = questionText,
+                        correctAnswer = correctAnswer
+                    )
+                    questionList.add(question)
+
+                    incorrectAnswers.forEach { answerText ->
+                        val isCorrect = answerText == correctAnswer
+                        val answer = Answer(
+                            questionId = 0,
+                            answerText = answerText,
+                            isCorrect = isCorrect
+                        )
+                        answerList.add(answer)
+                    }
+
+                    questionText = ""
+                    correctAnswer = ""
+                    incorrectAnswers = listOf("", "", "")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+            ) {
+                Text("Next Question")
+            }
         }
-    )
+    }
 }
+
