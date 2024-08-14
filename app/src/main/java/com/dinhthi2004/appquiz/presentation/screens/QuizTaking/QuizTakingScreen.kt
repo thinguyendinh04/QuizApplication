@@ -4,8 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,10 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.dinhthi2004.appquiz.data.database.QuizDatabase
 import com.dinhthi2004.appquiz.data.model.Answer
 import com.dinhthi2004.appquiz.data.model.Question
@@ -36,6 +32,18 @@ val dummyQuestions = listOf(
         quizId = 1,
         questionText = "What is the largest planet in our solar system?",
         correctAnswer = "Jupiter"
+    ),
+    Question(
+        questionId = 3,
+        quizId = 1,
+        questionText = "The shoes are comfortable and stylish?",
+        correctAnswer = "Status"
+    ),
+    Question(
+        questionId = 4,
+        quizId = 1,
+        questionText = "The book is a must-read for any Harry Potter?",
+        correctAnswer = "Shipped"
     )
 )
 
@@ -47,16 +55,29 @@ val dummyAnswers = listOf(
     Answer(questionId = 2, answerText = "Jupiter", isCorrect = true),
     Answer(questionId = 2, answerText = "Saturn", isCorrect = false),
     Answer(questionId = 2, answerText = "Earth", isCorrect = false),
-    Answer(questionId = 2, answerText = "Mars", isCorrect = false)
+    Answer(questionId = 2, answerText = "Mars", isCorrect = false),
+    Answer(questionId = 3, answerText = "Status", isCorrect = true),
+    Answer(questionId = 3, answerText = "Basic", isCorrect = false),
+    Answer(questionId = 3, answerText = "Open", isCorrect = false),
+    Answer(questionId = 3, answerText = "Close", isCorrect = false),
+    Answer(questionId = 4, answerText = "Shipped", isCorrect = true),
+    Answer(questionId = 4, answerText = "Static", isCorrect = false),
+    Answer(questionId = 4, answerText = "North", isCorrect = false),
+    Answer(questionId = 4, answerText = "Next", isCorrect = false)
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizTakingScreen(viewModel: QuizViewModel, quizId: Long, navController: NavHostController) {
     var questions by remember { mutableStateOf(dummyQuestions) }
+    var answers by remember { mutableStateOf(emptyList<Answer>()) }
     var currentQuestionIndex by remember { mutableStateOf(0) }
     var correctAnswers by remember { mutableStateOf(0) }
     var isQuizCompleted by remember { mutableStateOf(false) }
+
+    LaunchedEffect(quizId) {
+
+    }
 
     Column(
         modifier = Modifier
@@ -149,12 +170,3 @@ fun QuizTakingScreen(viewModel: QuizViewModel, quizId: Long, navController: NavH
     }
 }
 
-@Preview
-@Composable
-fun QuizTakingScreenPreview() {
-    QuizTakingScreen(
-        viewModel = QuizViewModel(QuizDatabase.getDatabase(LocalContext.current)),
-        quizId = 1,
-        navController = rememberNavController()
-    )
-}
